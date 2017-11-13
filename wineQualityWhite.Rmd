@@ -24,6 +24,7 @@ wine = read.csv("wineQualityWhites.csv")
 # 单一变量绘图部分
 
 看一下有哪些属性
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 names(wine)
 ```
@@ -31,7 +32,7 @@ names(wine)
 ### 各种质量的白酒的数量分布
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-qplot(x = factor(quality), data = wine)
+qplot(x = factor(quality), data = wine, color=I('black'), fill=I('#099DD9'))
 ```
 
 
@@ -48,16 +49,13 @@ head(sort(table(wine$fixed.acidity), decreasing = TRUE),n=20)
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE} 
-p1 = qplot(x = fixed.acidity, data = wine,  geom = 'freqpoly') +
+ggplot(aes(x = fixed.acidity), data = wine) +
+  geom_histogram(alpha = 0.5, fill=I('#F79420')) +
+  geom_freqpoly(alpha = 1, binwidth = 0.1) +
   scale_x_continuous(lim = c(4., 11.))
-p2 = qplot(x = fixed.acidity, data = wine,  geom = 'freqpoly', color = factor(quality)) +
-  scale_x_continuous(lim = c(4., 11.))
-grid.arrange(p1, p2)
+
 ```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = fixed.acidity , data = wine, geom='boxplot') +
-  scale_y_continuous(lim = c(4., 11.))
-```
+
 
 
 成分volatile.acidity 挥发性酸度：葡萄酒中醋酸的含量过高会导致醋的味道不舒服
@@ -68,13 +66,12 @@ summary(wine$volatile.acidity)
 head(sort(table(wine$volatile.acidity), decreasing = TRUE),n=20)
 ```
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-p1 = qplot(x = volatile.acidity, data = wine,  geom = 'freqpoly')
-p2 = qplot(x = volatile.acidity, data = wine,  geom = 'freqpoly', color = factor(quality))
-grid.arrange(p1, p2)
+ggplot(aes(x = volatile.acidity), data = wine) +
+  geom_histogram(alpha = 0.5, , fill=I('#F79420')) +
+  geom_freqpoly(alpha = 1, binwidth=0.01) +
+  scale_x_continuous(lim = c(0.08, 0.7))
 ```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = volatile.acidity , data = wine, geom='boxplot')
-```
+
 
 
 成分: citric.acid 柠檬酸：少量发现，柠檬酸可以增加“新鲜”和风味的葡萄酒
@@ -85,16 +82,12 @@ summary(wine$citric.acid)
 head(sort(table(wine$citric.acid), decreasing = TRUE),n=20)
 ```
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-p1 = qplot(x = citric.acid, data = wine,  geom = 'freqpoly') +
+ggplot(aes(x = citric.acid), data = wine) +
+  geom_histogram(alpha=0.5, fill=I('#F79420')) +
+  geom_freqpoly(alpha=1., binwidth=0.01) +
   scale_x_continuous(lim = c(0, 1.0))
-p2 = qplot(x = citric.acid, data = wine,  geom = 'freqpoly', color = factor(quality)) +
-  scale_x_continuous(lim = c(0, 1.0))
-grid.arrange(p1, p2)
 ```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = citric.acid , data = wine, geom='boxplot') +
-  scale_y_continuous(lim = c(0, 1.0))
-```
+
 
 成分: residual.sugar 残糖：发酵停止后的剩余糖量，少于1克/升的葡萄酒很少见，而高于45克/升的葡萄酒被认为是甜的
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -104,15 +97,10 @@ summary(wine$residual.sugar)
 head(sort(table(wine$residual.sugar), decreasing = TRUE),n=20)
 ```
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-p1 = qplot(x = residual.sugar, data = wine,  geom = 'freqpoly') +
+ggplot(aes(x = residual.sugar), data = wine) +
+  geom_histogram(alpha=0.5, fill=I('#F79420')) +
+  geom_freqpoly(alpha=1., binwidth=0.1) +
   scale_x_continuous(lim = c(0, 23))
-p2 = qplot(x = residual.sugar, data = wine,  geom = 'freqpoly', color = factor(quality)) +
-  scale_x_continuous(lim = c(0, 23))
-grid.arrange(p1, p2)
-```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = residual.sugar, data = wine, geom='boxplot') +
-  scale_y_continuous(lim = c(0, 23))
 ```
 
 成分: chlorides 氯化物：酒中的盐量
@@ -123,15 +111,10 @@ summary(wine$chlorides)
 head(sort(table(wine$chlorides), decreasing = TRUE),n=20)
 ```
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-p1 = qplot(x = chlorides, data = wine,  geom = 'freqpoly') +
+ggplot(aes(x = chlorides), data = wine) +
+  geom_histogram(alpha = 0.5, fill = I('#F79420')) +
+  geom_freqpoly(alpha = 1, binwidth = 0.002) +
   scale_x_continuous(lim = c(0, 0.1))
-p2 = qplot(x = chlorides, data = wine,  geom = 'freqpoly', color = factor(quality)) +
-  scale_x_continuous(lim = c(0, 0.1))
-grid.arrange(p1, p2)
-```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = chlorides, data = wine, geom='boxplot') +
-  scale_y_continuous(lim = c(0, 0.1))
 ```
 
 成分: free.sulfur.dioxide 游离二氧化硫：SO2的游离形式存在于分子SO2（作为溶解气体）和亚硫酸氢根离子的平衡状态; 它可以防止微生物的生长和葡萄酒的氧化
@@ -142,16 +125,12 @@ summary(wine$free.sulfur.dioxide)
 head(sort(table(wine$free.sulfur.dioxide), decreasing = TRUE),n=20)
 ```
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-p1 = qplot(x = free.sulfur.dioxide, data = wine,  geom = 'freqpoly') +
+ggplot(aes(x = free.sulfur.dioxide), data = wine) +
+  geom_histogram(alpha = 0.5, fill = I('#F79420')) +
+  geom_freqpoly(alpha = 1, binwidth = 1) +
   scale_x_continuous(lim = c(0, 100))
-p2 = qplot(x = free.sulfur.dioxide, data = wine,  geom = 'freqpoly', color = factor(quality)) +
-  scale_x_continuous(lim = c(0, 100))
-grid.arrange(p1, p2)
 ```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = free.sulfur.dioxide, data = wine, geom='boxplot') +
-  scale_y_continuous(lim = c(0, 100))
-```
+
 
 成分: total.sulfur.dioxide 总二氧化硫：游离和结合形式的SO 2的量; 在低浓度下，SO2在葡萄酒中几乎检测不到，但是当游离SO2浓度超过50ppm时，SO2在葡萄酒的鼻子和味道中变得明显
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -161,15 +140,10 @@ summary(wine$total.sulfur.dioxide)
 head(sort(table(wine$total.sulfur.dioxide), decreasing = TRUE),n=20)
 ```
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-p1 = qplot(x = total.sulfur.dioxide, data = wine,  geom = 'freqpoly')  +
+ggplot(aes(x = total.sulfur.dioxide), data = wine) +
+  geom_histogram(alpha = 0.5, fill = I('#F79420')) +
+  geom_freqpoly(alpha = 1, binwidth = 3) +
   scale_x_continuous(lim = c(0, 300))
-p2 = qplot(x = total.sulfur.dioxide, data = wine,  geom = 'freqpoly', color = factor(quality)) +
-  scale_x_continuous(lim = c(0, 300))
-grid.arrange(p1, p2)
-```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = total.sulfur.dioxide, data = wine, geom='boxplot') +
-  scale_y_continuous(lim = c(0, 300))
 ```
 
 属性：density 密度：取决于酒精和糖的百分比，水的密度接近于水的密度
@@ -180,16 +154,12 @@ summary(wine$density)
 head(sort(table(wine$density), decreasing = TRUE),n=20)
 ```
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-p1 = qplot(x = density, data = wine,  geom = 'freqpoly')  +
+ggplot(aes(x = density), data = wine) +
+  geom_histogram(alpha = 0.5, fill = I('#F79420')) +
+  geom_freqpoly(alpha = 1, binwidth = 0.0003) +
   scale_x_continuous(lim = c(0.985, 1.005))
-p2 = qplot(x = density, data = wine,  geom = 'freqpoly', color = factor(quality)) +
-  scale_x_continuous(lim = c(0.985, 1.005))
-grid.arrange(p1, p2)
 ```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = density, data = wine, geom='boxplot') +
-  scale_y_continuous(lim = c(0.985, 1.005))
-```
+
 
 属性: pH pH值：描述葡萄酒的酸度或碱度是从0（非常酸性）到14（非常碱性）的标准。 大多数葡萄酒的pH值在3-4之间
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -199,14 +169,10 @@ summary(wine$pH)
 head(sort(table(wine$pH), decreasing = TRUE),n=20)
 ```
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-p1 = qplot(x = pH, data = wine,  geom = 'freqpoly')  +
+ggplot(aes(x = pH), data = wine) +
+  geom_histogram(alpha = 0.5, fill = I('#F79420')) +
+  geom_freqpoly(alpha = 1, binwidth = 0.01) +
   scale_x_continuous(lim = c(2.5, 4.))
-p2 = qplot(x = pH, data = wine,  geom = 'freqpoly', color = factor(quality)) +
-  scale_x_continuous(lim = c(2.5, 4.))
-grid.arrange(p1, p2)
-```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = pH, data = wine, geom='boxplot')
 ```
 
 成分：sulphates 硫酸盐：一种能够促成二氧化硫气体（SO 2）水平的葡萄酒添加剂，它起抗菌剂和抗氧化剂的作用
@@ -217,12 +183,9 @@ summary(wine$sulphates)
 head(sort(table(wine$sulphates), decreasing = TRUE),n=20)
 ```
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-p1 = qplot(x = sulphates, data = wine,  geom = 'freqpoly')
-p2 = qplot(x = sulphates, data = wine,  geom = 'freqpoly', color = factor(quality)) 
-grid.arrange(p1, p2)
-```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = sulphates, data = wine, geom='boxplot')
+ggplot(aes(x = sulphates), data = wine) +
+  geom_histogram(alpha = 0.5, fill = I('#F79420')) +
+  geom_freqpoly(alpha = 1, binwidth = 0.01)
 ```
 
 成分: alcohol 酒精：酒的百分比酒精含量
@@ -233,13 +196,11 @@ summary(wine$alcohol)
 head(sort(table(wine$alcohol), decreasing = TRUE),n=20)
 ```
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-p1 = qplot(x = alcohol, data = wine,  geom = 'freqpoly')
-p2 = qplot(x = alcohol, data = wine,  geom = 'freqpoly', color = factor(quality)) 
-grid.arrange(p1, p2)
+ggplot(aes(x = alcohol), data = wine) +
+  geom_histogram(alpha = 0.5, fill = I('#F79420')) +
+  geom_freqpoly(alpha = 1, binwidth = 0.1)
 ```
-```{r echo=FALSE, message=FALSE, warning=FALSE} 
-qplot(x = factor(quality), y = alcohol, data = wine, geom='boxplot')
-```
+
 
 
 # 单变量分析
@@ -248,33 +209,48 @@ qplot(x = factor(quality), y = alcohol, data = wine, geom='boxplot')
 
 数据集中有4898种白酒，具有11个特征
 
-- 固定酸度（酒石酸 - g / dm ^ 3）
-- 挥发酸度（乙酸 - g / dm ^ 3）
-- 柠檬酸（g / dm ^ 3）
-- 残糖（g / dm ^ 3）
-- 氯化物（氯化钠 - g / dm ^ 3
-- 游离二氧化硫（mg / dm ^ 3）
-- 总二氧化硫（mg / dm ^ 3）
-- 密度（g / cm ^ 3）
+- 固定酸度（酒石酸 - g/dm^3）
+- 挥发酸度（乙酸 - g/dm^3）
+- 柠檬酸（g/dm^3）
+- 残糖（g/dm^3）
+- 氯化物（氯化钠 - g/dm^3
+- 游离二氧化硫（mg/dm^3）
+- 总二氧化硫（mg/dm^3）
+- 密度（g/cm^3）
 - pH
-- 硫酸盐（硫酸钾 - g / dm3）
+- 硫酸盐（硫酸钾 - g/dm3）
 - 酒精（体积百分比）
 
 都是变量，没有有序因子变量
 
 ### 数据集中的主要特征是什么？
-通过以上的图示分析，数据集中的主要特征是质量(quality)和酒精含量(alcohol)还有密度(density)。 
-我想确定哪些功能最预测白酒的质量。我怀疑酒精含量(alcohol),密度(density)和其他变量的一些组合可以用来建立一个白酒质量预测模型。
+
+一些属性是大致程正态分布状
+
+- 白葡萄酒质量 quality
+- 氯化物 chlorides
+- pH 
+- 游离二氧化硫值 free.sulfur.dioxide 
+- 总二氧化硫 total.sulfur.dioxide 
+- 密度 density 
+
+其他属性都程 成靠前的正态分布模式
+
 
 
 ### 您认为数据集中还有哪些其他功能可以帮助您调查您感兴趣的功能？
-氯化物（chlorides), 残糖(residual.sugar) 可能有助于白酒质量预测模型。 
+
+通过以上的图示分析，通过单变量分析，还看不出，哪些对我评估白葡萄酒有关
 
 ### 您是否从数据集中的现有变量创建了任何新变量？
+
 目前看来还不需要
 
 ### 你调查的功能中，有没有不寻常的分布？ 您是否对数据进行了任何操作来整理，调整或更改数据的形式？ 如果是这样，你为什么这样做？
-从上面的图看来，大体上没有不寻常的分布。不过有些个别点值相差甚远，我做了裁剪，过滤掉了太大或者大小的数据。
+
+有不寻常分布 如柠檬酸 citric.acid，有两个头，一个是0.3左右，一个是在0.49左右。
+
+另外有些个别点值相差甚远，我做了裁剪，过滤掉了太大或者大小的数据。
 
 
 # 双变量绘图部分
@@ -300,60 +276,92 @@ cor(d)
 
 图标看每两个属性之间的相关性
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width = 15, fig.height = 15}
 library(GGally)
-#library(scales)
-#library(memisc)
 
 set.seed(20022012)
 wine_sample <- wine[, 2:13]
+wine_sample$quality = factor(wine_sample$quality)
 ggpairs(wine_sample, 
   lower = list(continuous = wrap("points", shape = I('.'))), 
-  upper = list(combo = wrap("box", outlier.shape = I('.'))))
+  upper = list(combo = wrap("box", outlier.shape = I('.')), continuous = wrap("cor", size = 4)))
 ```
 
 从以上表格中可以看出，酒精含量(alcohol)和密度（density）具有很强的相关性，我们单独绘制散点图看看
 
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(x = alcohol, y = density), data = wine) +
-  geom_point() +
+  geom_point(fill = I('#F79420'), color = I('black'), shape = 21) +
   scale_y_continuous(limits = c(0.98,1.02)) +
   geom_smooth()
 ```
+
 由此看出 酒精越多，密度越低
 
-下面看看，密度density和酒精alcohol 分别和质量quality的关系
+我们下面分别看一下密度 和 酒精
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+我们先看看密度
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width = 15}
 p1 = ggplot(aes(x = factor(quality), y = density), data = wine) +
-  geom_jitter(alpha = 1./2) +
+  geom_jitter( alpha = 0.3)  +
+  geom_boxplot( alpha = 0.5) +
   scale_y_continuous(limits = c(0.98,1.01))
-p2 = ggplot(aes(x = factor(quality), y = density), data = wine) +
-  geom_boxplot() +
-  scale_y_continuous(lim = c(0.985, 1.01))
+p2 = qplot(x = density, data = wine,  geom = 'freqpoly', color = factor(quality)) +
+  scale_x_continuous(lim = c(0.98, 1.01)) +
+  scale_color_brewer(palette = "Reds")
 grid.arrange(p1, p2, ncol=2)
 ```
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+这样看不出，不同质量下密度的线，下面我们分质量汇出密度的线：
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=15}
+qplot(x = density, data = wine,  geom = 'freqpoly', color = factor(quality)) +
+  facet_wrap(~ factor(quality), scales="free_y") +
+  scale_x_continuous(lim = c(0.98, 1.01))
+```
+
+我们看看酒精的情况
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=7}
 p1 = ggplot(aes(x = factor(quality), y = alcohol), data = wine) +
-  geom_jitter(alpha = 1./2)
-p2 = ggplot(aes(x = factor(quality), y = alcohol), data = wine) +
-  geom_boxplot()
+  geom_jitter( alpha = 0.2)  +
+  geom_boxplot( alpha = 0.5)
+p2 = qplot(x = alcohol, data = wine,  geom = 'freqpoly', color = factor(quality)) +
+  scale_color_brewer(palette = "Greens")
 grid.arrange(p1, p2, ncol=2)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=15}
+qplot(x = alcohol, data = wine,  geom = 'freqpoly', color = factor(quality)) +
+  facet_wrap(~ factor(quality), scales="free_y")
 ```
 
 从相关性矩阵中可以看出 密度(density) 和 残糖(residual.sugar) 之间也有较强的相关性
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, , fig.height=7}
 p1 = ggplot(aes(x = density, y = residual.sugar), data = wine) +
   geom_point(alpha = 1./3) +
-  scale_x_continuous(limits = c(0.985,1.015)) +
-  scale_y_continuous(limits = c(0, 40)) +
+  scale_x_continuous(limits = c(0.985,1.005)) +
+  scale_y_continuous(limits = c(0, 30)) +
   geom_smooth()
 p2 = ggplot(aes(x = factor(quality), y = residual.sugar), data = wine) +
   geom_jitter(alpha = 1./5) +
-  scale_y_continuous(limits = c(0, 40))
+  geom_boxplot(alpha = 0.5) +
+  scale_y_continuous(limits = c(0, 30))
 grid.arrange(p1, p2, ncol=2)
 ```
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=5}
+p1 = qplot(x = residual.sugar, data = wine,  geom = 'freqpoly', color = factor(quality)) +
+  scale_x_continuous(limits = c(0, 25)) +
+  scale_color_brewer(palette = "Oranges")
+p2 = qplot(x = residual.sugar, data = wine,  geom = 'freqpoly', color = factor(quality)) +
+  facet_wrap(~ factor(quality), scales="free_y") +
+  scale_x_continuous(limits = c(0, 25))
+grid.arrange(p1, p2, ncol = 2)
+```
+
 基本上可以看出，残糖越多(residual.sugar), 密度(density) 越高；但是看不出残糖(residual.sugar)和最终的质量(quality)有什么直接的关系
 
 从相关性矩阵中可以看出 游离二氧化硫(free.sulfur.dioxide) 和 总二氧化硫(total.sulfur.dioxide) 之间也有较强的相关性
@@ -369,20 +377,31 @@ ggplot(aes(x = free.sulfur.dioxide, y = total.sulfur.dioxide), data = wine) +
 
 从相关性矩阵中可以看出 密度(density) 和 总二氧化硫(total.sulfur.dioxide) 之间也有较强的相关性
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=7}
 p1 = ggplot(aes(x = density, y = total.sulfur.dioxide), data = wine) +
   geom_point(alpha = 1./3) +
   scale_x_continuous(limits = c(0.985,1.005)) +
   geom_smooth()
 p2 = ggplot(aes(x = factor(quality), y = total.sulfur.dioxide), data = wine) +
-  geom_jitter(alpha = 1./5)
+  geom_jitter(alpha = 1./5) +
+  geom_boxplot(alpha = 0.5)
 grid.arrange(p1, p2, ncol=2)
 ```
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=5}
+p1 = qplot(x = total.sulfur.dioxide, data = wine,  geom = 'freqpoly', color = factor(quality)) +
+  scale_x_continuous(limits = c(0,300)) +
+  scale_color_brewer(palette = "Blues")
+p2 = qplot(x = total.sulfur.dioxide, data = wine,  geom = 'freqpoly', color = factor(quality)) +
+  facet_wrap(~ factor(quality), scales="free_y") +
+  scale_x_continuous(limits = c(0,300))
+grid.arrange(p1, p2, ncol = 2)
+```
+
 可以看出 总二氧化汤(total.sulfur.dioxide) 和 密度(density) 确实有近似的关系，但是和最终的质量(quality)没有直接的关系
 
 我们再看看游离二氧化碳(free.sulfur.dioxide) 和 密度(density) 之间的的关系
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=7}
 p1 = ggplot(aes(x = density, y = free.sulfur.dioxide), data = wine) +
   geom_point(alpha = 1./3) +
   scale_x_continuous(limits = c(0.985,1.005)) +
@@ -390,8 +409,18 @@ p1 = ggplot(aes(x = density, y = free.sulfur.dioxide), data = wine) +
   geom_smooth()
 p2 = ggplot(aes(x = factor(quality), y = free.sulfur.dioxide), data = wine) +
   geom_jitter(alpha = 1./5) +
+  geom_boxplot(alpha = 0.5) +
   scale_y_continuous(limits = c(0,150))
 grid.arrange(p1, p2, ncol=2)
+```
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=5}
+p1 = qplot(x = free.sulfur.dioxide, data = wine,  geom = 'freqpoly', color = factor(quality)) +
+  scale_x_continuous(limits = c(0,150)) +
+  scale_color_brewer(palette = "Blues")
+p2 = qplot(x = free.sulfur.dioxide, data = wine,  geom = 'freqpoly', color = factor(quality)) +
+  facet_wrap(~ factor(quality), scales="free_y") +
+  scale_x_continuous(limits = c(0,150))
+grid.arrange(p1, p2, ncol = 2)
 ```
 
 可以看出，游离二氧化碳(free.sulfur.dioxide) 和 密度(density) 之间 确实有些关系，但是关系不如总二氧化碳那么大
@@ -419,6 +448,18 @@ grid.arrange(p1, p2, ncol=2)
 
 # 多变量绘图部分
 
+我们首先看看在不同密度(density)和酒精按量(alchohol)下的 白葡萄酒质量(quality)的表现
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x = alcohol, y = density, color = factor(quality)), data = wine) +
+  geom_jitter() +
+  scale_color_brewer(palette = "Blues") +
+  geom_smooth(method = "lm", se = FALSE,size=1) +
+  ylim(0.985, 1.005) +
+  labs(y = 'Density',x = 'Alcohol') +
+  ggtitle("density VS alcohol VS quality")
+```
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 summary(wine$free.sulfur.dioxide)
 head(sort(table(wine$free.sulfur.dioxide), decreasing = TRUE), 40)
@@ -441,8 +482,11 @@ ggplot(aes(x = free.sulfur.dioxide, y = alcohol, colour = factor(quality)),
        data = wine) +
   geom_jitter() +
   scale_x_log10() +
-  scale_color_brewer(type = "seq", palette = "Greens")
+  scale_color_brewer(type = "seq", palette = "Greens") +
+  geom_smooth(method = "lm", se = FALSE,size=1) +
+  ggtitle("Alcohol VS free.sulfur.dioxide VS quality")
 ```
+
 可以看出在酒精含量比较高的时候，游离二氧化碳（free.sulfur.dioxide）越多，白酒的质量(quality)越好
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -450,17 +494,23 @@ ggplot(aes(x = chlorides, y = alcohol, colour = factor(quality)),
        data = wine, ) +
   geom_jitter() +
   scale_x_log10() +
-  scale_color_brewer(type = "seq", palette = "Reds")
+  scale_color_brewer(type = "seq", palette = "Reds") +
+  geom_smooth(method = "lm", se = FALSE,size=1) +
+  ggtitle("Alcohol VS chlorides VS quality")
 ```
-可以看出 同等酒精含量的情况下， 氯化物(chlorids)越低，质量(quality)越高
+
+可以看出 在酒精含量的情况下， 氯化物(chlorids)越低，质量(quality)越高
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(x = volatile.acidity, y = alcohol, colour = factor(quality)), 
        data = wine, ) +
   geom_jitter() +
   scale_x_log10() +
-  scale_color_brewer(type = "seq", palette = "Oranges")
+  scale_color_brewer(type = "seq", palette = "Oranges") +
+  geom_smooth(method = "lm", se = FALSE,size=1) +
+  ggtitle("Alcohol VS volatile.acidity VS quality")
 ```
+
 可以看出，酒精含量不高的时候，挥发性酸度（volatile acidity）约低，白酒的质量quality越高
 
 
@@ -501,7 +551,7 @@ mtable(m1, m2, m3, m4)
 
 ### 图一
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Plot_One}
-qplot(x = factor(quality), data = wine)
+qplot(x = factor(quality), data = wine, color=I('black'), fill=I('#099DD9'))
 ```
 
 ### 图一描述
@@ -512,7 +562,7 @@ qplot(x = factor(quality), data = wine)
 ### 图二
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Plot_Two}
 ggplot(aes(x = alcohol, y = density), data = wine) +
-  geom_point() +
+  geom_point(fill = I('#F79420'), color = I('black'), shape = 21) +
   scale_y_continuous(limits = c(0.98,1.02)) +
   geom_smooth()
 ```
@@ -531,7 +581,9 @@ ggplot(aes(x = alcohol, y = density), data = wine) +
 ggplot(aes(x = volatile.acidity, y = alcohol, colour = factor(quality)), 
        data = wine, ) +
   geom_jitter() +
-  scale_color_brewer(type = "seq", palette = "Oranges")
+  scale_color_brewer(type = "seq", palette = "Oranges") +
+  geom_smooth(method = "lm", se = FALSE,size=1) +
+  ggtitle("Alcohol VS volatile.acidity VS quality")
 ```
 
 ### 图三描述
@@ -540,7 +592,11 @@ ggplot(aes(x = volatile.acidity, y = alcohol, colour = factor(quality)),
 
 # 反思
 
-游离二氧化碳（free.sulfur.dioxide）, 氯化物(chlorids), 挥发性酸度（volatile acidity）这三者虽然对最后的白酒质量(quality)有影响，但是根据R语言，绘出的图的信息看，影响并不直接，而用用得线性规划虽然做出了模型，但是是很不靠谱的。如果要对白酒质量做预测，我认为要使用机器学习的方法来做。
+首先对整体过程做一下总结，首先对单变量做了一下，对每个属性都做了分析，但是发现对目标预测白葡萄酒质量(quality)基本上没有帮助，于是再做双变量分析，也就是发现了酒精按量(alcohol)和密度(density)和白葡萄酒质量密切相关，大大增加了信心。最后再引入多变量分析，又找到了其他几个变量和结果相关。
+
+回顾整个探索过程是一件非常有意思的事情
+
+不过，看最后建立的回归模型看，游离二氧化碳（free.sulfur.dioxide）, 氯化物(chlorids), 挥发性酸度（volatile acidity）这三者虽然对最后的白酒质量(quality)有影响，但是根据R语言，绘出的图的信息看，影响并不直接，而用用得线性规划虽然做出了模型，但是是很不靠谱的。如果要对白酒质量做预测，我认为要使用机器学习的方法来做。
 
 # 参考资料
 
